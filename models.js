@@ -42,3 +42,4 @@ class itensVenda {
         this.quantidade = quantidade;
     }
 };
+
