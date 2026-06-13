@@ -5,3 +5,5 @@ class Vendedor {
         this.email = email;
     }
 }
+
+module.exports = Vendedor;
