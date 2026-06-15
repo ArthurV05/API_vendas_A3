@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: canto_silencio_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: canto_silencio_api
+    restart: always
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - .:/app                        
+      - /app/node_modules  
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  relatorios:
+    build:
+      context: ./relatorios
+      dockerfile: Dockerfile
+    container_name: canto_silencio_relatorios
+    restart: always
+    ports:
+      - "${RELATORIO_PORT:-3001}:3001"
+    volumes:
+      - ./relatorios:/app                        
+      - /app/node_modules
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      RELATORIO_PORT: 3001
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
