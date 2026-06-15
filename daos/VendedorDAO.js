@@ -1,6 +1,6 @@
-const Cliente = require('../models/Cliente');
+const Vendedor = require('../models/Vendedor');
 
-class ClienteDAO {
+class VendedorDAO {
 
     constructor(pool) {
         this.pool = pool;
@@ -9,49 +9,46 @@ class ClienteDAO {
     async listarTodos() {
 
         const resultado = await this.pool.query(
-            'SELECT * FROM cliente'
+            'SELECT * FROM vendedor'
         );
 
         return resultado.rows.map(row =>
-            new Cliente(
+            new Vendedor(
                 row.id,
                 row.nome,
-                row.email,
-                row.telefone
+                row.email
             )
         );
     };
 
-    async salvar(cliente) {
+    async salvar(vendedor) {
 
         const resultado = await this.pool.query(
             `
-            INSERT INTO cliente 
-            (nome, email, telefone) 
-            VALUES ($1, $2, $3) 
+            INSERT INTO vendedor 
+            (nome, email) 
+            VALUES ($1, $2) 
             RETURNING *;
             `,
             [
-                cliente.nome,
-                cliente.email,
-                cliente.telefone
+                vendedor.nome,
+                vendedor.email
             ]
         );
 
         const row = resultado.rows[0];
 
-        return new Cliente(
+        return new Vendedor(
             row.id,
             row.nome,
-            row.email,
-            row.telefone
+            row.email
         );
     };
 
     async buscarPorId(id) {
 
         const resultado = await this.pool.query(
-            'SELECT * FROM cliente WHERE id = $1',
+            'SELECT * FROM vendedor WHERE id = $1',
             [id]
         );
 
@@ -59,28 +56,26 @@ class ClienteDAO {
 
         const row = resultado.rows[0];
 
-        return new Cliente(
+        return new Vendedor(
             row.id,
             row.nome,
-            row.email,
-            row.telefone
+            row.email
         );
     };
 
-    async atualizar(cliente) {
+    async atualizar(vendedor) {
 
         const resultado = await this.pool.query(
             `
-            UPDATE cliente 
-            SET nome = $1, email = $2, telefone = $3
-            WHERE id = $4
+            UPDATE vendedor 
+            SET nome = $1, email = $2
+            WHERE id = $3
             RETURNING *;
             `,
             [
-                cliente.nome,
-                cliente.email,
-                cliente.telefone,
-                cliente.id
+                vendedor.nome,
+                vendedor.email,
+                vendedor.id
             ]
         );
 
@@ -88,18 +83,17 @@ class ClienteDAO {
 
         const row = resultado.rows[0];
 
-        return new Cliente(
+        return new Vendedor(
             row.id,
             row.nome,
-            row.email,
-            row.telefone
+            row.email
         );
     };
 
     async deletar(id) {
 
         const resultado = await this.pool.query(
-            'DELETE FROM cliente WHERE id = $1 RETURNING *',
+            'DELETE FROM vendedor WHERE id = $1 RETURNING *',
             [id]
         );
 
@@ -108,4 +102,4 @@ class ClienteDAO {
 
 };
 
-module.exports = ClienteDAO;
+module.exports = VendedorDAO;
