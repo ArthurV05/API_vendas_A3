@@ -212,11 +212,4 @@ Requisição HTTP
     
   PostgreSQL    -> Banco de dados consultado
 ```
-Entrega
 
-Para gerar a tag de entrega:
-
-```bash
-git tag EntregaA3
-git push --tags
-```
