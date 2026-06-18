@@ -1,4 +1,4 @@
-Canto do Silêncio - Aplicação de vendas
+Canto do Silêncio 😴😴- Aplicação de vendas
 
 Projeto desenvolvido para a disciplina de Sistemas Distribuídos e Mobile.
 
@@ -19,6 +19,7 @@ Tecnologias usadas
 - Node.js com Express
 - PostgreSQL
 - Docker e Docker Compose
+- git
 
 ---
 
@@ -37,7 +38,7 @@ Como rodar o projeto
 
 **1. Clone o repositório**
 
-```bash
+``` bash
 git clone https://github.com/ArthurV05/API_vendas_A3.git
 cd API_vendas_A3
 ```
@@ -46,7 +47,7 @@ cd API_vendas_A3
 
 Copie o arquivo de exemplo e preencha com as suas configurações:
 
-```bash
+``` bash
 cp .env.example .env
 ```
 
@@ -63,7 +64,7 @@ APP_PORT=3000
 RELATORIO_PORT=3001
 ```
 
-**Uma observação importante: o `DB_HOST` deve ser `db` (e não `localhost`) porque dentro do Docker os serviços se comunicam pelo nome do container, não pelo endereço local da máquina.**
+**Observação: o `DB_HOST` deve ser `db` (e não `localhost`) porque dentro do Docker os serviços se comunicam pelo nome do container, não pelo endereço local da máquina.**
 
 **3. Suba os containers**
 
@@ -148,8 +149,8 @@ Serviço de relatórios — porta 3001
 ```
 GET /relatorios/produtos-mais-vendidos   produtos por quantidade vendida e receita gerada
 GET /relatorios/vendas-por-cliente       total de pedidos e valor gasto por cliente
-GET /relatorios/consumo-medio            ticket médio de compra por cliente
-GET /relatorios/baixo-estoque            produtos com estoque baixo (padrão: <= 5 unidades)
+GET /relatorios/consumo-medio            valor médio de compra por cliente
+GET /relatorios/baixo-estoque            produtos com estoque baixo (5 unidades por padrão)
 ```
 
 No relatório de baixo estoque, você pode passar um limite personalizado:
@@ -199,7 +200,7 @@ POST /clientes
 
 Arquitetura
 
-O projeto segue uma arquitetura em camadas:
+O projeto possui uma arquitetura em camadas:
 
 ```
 Requisição HTTP
